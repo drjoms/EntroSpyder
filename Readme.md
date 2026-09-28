@@ -13,7 +13,7 @@ High-Performance, Multi-Stage Entropy Distillation Pipeline
 
     “Most entropy sources are either too slow (hardware) or too predictable (software). EntroSpyder turns environmental chaos into high-density, non-deterministic randomness.”
 
-EntroSpyder is an open-source Entropy-as-a-Service (EaaS) ecosystem. It is designed to harvest physical noise from distributed edge-nodes and distill it into high-density entropy for Monte Carlo simulations, cryptographic seeding, and high-accuracy scientific computing.
+EntroSpyder is an open-source Entropy-as-a-Service (EaaS) ecosystem. It is designed to harvest physical noise from distributed edge-nodes and distill it into high-density entropy for Monte Carlo simulations, cryptographic seeding(this is a remote possibility), and high-accuracy scientific computing.
 🏗️ Architecture: The Three-Stage Pipeline
 
 The system operates through a distributed, three-stage lifecycle: Collection →→ Refinement →→ Distribution.
