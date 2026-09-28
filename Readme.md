@@ -4,7 +4,7 @@ This project is licensed under the Apache License 2.0.
 
 For attribution and contact information, please refer to the `NOTICE` file in this repository.
 
-Project is a very early stage. It's not even alpha yet.
+Project is a very early stage. It's not even alpha yet. Major parts of it are subject to change.
 
 
 🕷️ Project EntroSpyder
