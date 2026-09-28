@@ -1,0 +1,221 @@
+TL;DR: blake2b512 gives biggest digest per second = best performance per second on both PC AND Raspberry Pi (4, I think?)
+
+
+benchmark used:
+dd if=/dev/urandom of=test_data bs=1M count=100
+for alg in blake2b512 blake2s256 gost md4 md5 rmd160 sha1 sha224 sha256 sha3-224 sha3-256 sha3-384 sha3-512 sha384 sha512 sha512-224 sha512-256 shake128 shake256 sm3; do echo -n "$alg: "; time openssl dgst -$alg test_data | sed 's/^.*= //'; done
+
+
+
+
+my beast of 16x x3d amd cpu:
+
+for alg in blake2b512 blake2s256 gost md4 md5 rmd160 sha1 sha224 sha256 sha3-224 sha3-256 sha3-384 sha3-512 sha384 sha512 sha512-224 sha512-256 shake128 shake256 sm3; do echo -n "$alg: "; time openssl dgst -$alg test_data | sed 's/^.*= //'; done
+blake2b512: 635ccc64acbd57a41627cabba3c5226261c4f92abe92b706610359ba13cc579183327f30285a9a1e6c727bfa8653a1c2558c2c05d3694c1b3a8784440d94d584
+
+real	0m0.068s
+user	0m0.061s
+sys	0m0.008s
+blake2s256: bae82014d5c4b0cc4fc85c945ed0b06dc05b47c7b34c71749acc021ea11b5124
+
+real	0m0.107s
+user	0m0.099s
+sys	0m0.008s
+gost: dgst: Unknown option or message digest: gost
+dgst: Use -help for summary.
+80FBF531957F0000:error:0308010C:digital envelope routines:inner_evp_generic_fetch:unsupported:../openssl-3.5.8/crypto/evp/evp_fetch.c:376:Global default library context, Algorithm (gost : 0), Properties (<null>)
+
+real	0m0.002s
+user	0m0.001s
+sys	0m0.000s
+md4: Error setting digest
+80EB3F48D97F0000:error:0308010C:digital envelope routines:inner_evp_generic_fetch:unsupported:../openssl-3.5.8/crypto/evp/evp_fetch.c:376:Global default library context, Algorithm (MD4 : 102), Properties ()
+80EB3F48D97F0000:error:03000086:digital envelope routines:evp_md_init_internal:initialization error:../openssl-3.5.8/crypto/evp/digest.c:271:
+
+real	0m0.001s
+user	0m0.000s
+sys	0m0.001s
+md5: 0952fa7788a167196e68b80fd6212a61
+
+real	0m0.098s
+user	0m0.091s
+sys	0m0.006s
+rmd160: 89584bf58e2068cf46565d7dbc429abdb266e868
+
+real	0m0.290s
+user	0m0.285s
+sys	0m0.005s
+sha1: a6ec53d86fcfb73ea85d905432cbb1b30017b0e8
+
+real	0m0.046s
+user	0m0.037s
+sys	0m0.009s
+sha224: 9a53a67585d50dc8373a0c5d0a316c451cd306144657710c81c38959
+
+real	0m0.048s
+user	0m0.040s
+sys	0m0.008s
+sha256: 7e33cf1879acae816e063b29ed398dde54f61a7ad7d2e838cde4d4380c8f5ca8
+
+real	0m0.048s
+user	0m0.045s
+sys	0m0.003s
+sha3-224: a902afb05d3bf8317ffc6c90265f9d17c03accbbafdd9d93d62924da
+
+real	0m0.135s
+user	0m0.131s
+sys	0m0.005s
+sha3-256: f09d770d7f7c25d3e446690d754986dc842c745212cfde0de498025ed90d6ca7
+
+real	0m0.143s
+user	0m0.137s
+sys	0m0.006s
+sha3-384: 3513d671159cfaa67c740dc4b380cac9a4069d4ba5a40ef9b90d4c2a63f1c3d568626d8609f2d971b80f068e4dc18358
+
+real	0m0.184s
+user	0m0.177s
+sys	0m0.007s
+sha3-512: e7f9333670691a4f49048ce663c96583cb0b1d1f7de8e60b7682bf0a549c9a7f7ed3e5fbfaab82088c92ff98a27bf7b9048d62331edd0fc54bad35456ae65a57
+
+real	0m0.262s
+user	0m0.253s
+sys	0m0.009s
+sha384: 5e60fd207cb09bcedb346023653a442a83b20c4dda24e6a6b5df77a6ee5fdba790dc21b7a87000270ece4eb6541b75a2
+
+real	0m0.078s
+user	0m0.072s
+sys	0m0.006s
+sha512: 2f59888770fcb9077287ee529dbc19acde1fbfbb383f79abbc489d5efaede0046037bedab4ddaac541b0cd594732a7e31265e11dbee7764b765d534f560660e9
+
+real	0m0.078s
+user	0m0.067s
+sys	0m0.012s
+sha512-224: 1b74f16a4dce900eba114bb6e11e5f2122800d546aa1e8b1c26de3f7
+
+real	0m0.078s
+user	0m0.075s
+sys	0m0.003s
+sha512-256: c8da136e510e673f91e526052e89180f51d9a6e71fae8897817936091a6d3307
+
+real	0m0.078s
+user	0m0.068s
+sys	0m0.010s
+shake128:
+real	0m0.118s
+user	0m0.115s
+sys	0m0.003s
+shake256:
+real	0m0.143s
+user	0m0.137s
+sys	0m0.006s
+sm3: 4b372e78a4054b8bc31570b9fe63f44a46d7fe811d605576392b7ca51680191d
+
+real	0m0.176s
+user	0m0.169s
+sys	0m0.006s
+
+
+Raspberry pie:
+pi@raspberrypi:~ $ for alg in blake2b512 blake2s256 gost md4 md5 rmd160 sha1 sha224 sha256 sha3-224 sha3-256 sha3-384 sha3-512 sha384 sha512 sha512-224 sha512-256 shake128 shake256 sm3; do echo -n "$alg: "; time openssl dgst -$alg test_data | sed 's/^.*= //'; done
+blake2b512: cc3519c1352b17908546395418ccdb3754fbeddd4b838d441064120ba41e6bc9be979ac9521b2005e9883e48b369550fd8c6a3d5487e02dc6eca10ea69559a27
+
+real	0m1.360s
+user	0m1.158s
+sys	0m0.213s
+blake2s256: b4f2d85f11b9afa999fd4bb593250bb04d4d8d845fadbf15ab033546d7903e09
+
+real	0m1.039s
+user	0m0.813s
+sys	0m0.230s
+gost: dgst: Unrecognized flag gost
+dgst: Use -help for summary.
+
+real	0m0.013s
+user	0m0.006s
+sys	0m0.012s
+md4: 24ee91db62c9a9a0406b3e17748bb8b1
+
+real	0m0.421s
+user	0m0.230s
+sys	0m0.196s
+md5: ebe44b7988a6c2d3f1ce80159817c967
+
+real	0m0.566s
+user	0m0.427s
+sys	0m0.145s
+rmd160: 621b3a0550df5446110e5c649a8779b8b7e218e3
+
+real	0m0.941s
+user	0m0.715s
+sys	0m0.231s
+sha1: efe994da8eb66d94a2654f8a3fbbc1c8e5497754
+
+real	0m0.740s
+user	0m0.589s
+sys	0m0.156s
+sha224: 50ed1e0b53e091684d4117e9e2b506ddb95c5f5573ec5fa79f656de6
+
+real	0m1.039s
+user	0m0.818s
+sys	0m0.226s
+sha256: 429154f02f8e7e400309cdb8c90ca4af0d7d4cd867b298f56bb79fb39b64f4ea
+
+real	0m1.040s
+user	0m0.809s
+sys	0m0.236s
+sha3-224: 249ed93ccc8ece3610d126e8ee0d2394db7c20f6810a6d6e30e144ae
+
+real	0m2.503s
+user	0m2.251s
+sys	0m0.256s
+sha3-256: 68688e3f91cb2121ab9c2003ab49f95c3251e91dbed9246e5eda6ca3103d220d
+
+real	0m2.612s
+user	0m2.446s
+sys	0m0.171s
+sha3-384: 828c1947b36b06f92fbb27bf8d818b1366108701106ad0b77f877d8b4b5d107089056cd760dd583a0bb3bc24bc01b0ff
+
+real	0m3.251s
+user	0m3.084s
+sys	0m0.171s
+sha3-512: d5cc4da8dff36834ceccfbfc3155b1610e78890bd3593c8e4dce7d4bc83e96fd733452bbde06a96da0b06e2a4c5a28ee6d08badb2b67f25d869bff2351756312
+
+real	0m4.449s
+user	0m4.235s
+sys	0m0.216s
+sha384: 1edf04778556fdbceb6970ed3ad55adf30c8617f2bb5201996c479c3bd4b037c77659b9d826e3b189578e51025eee9d4
+
+real	0m2.636s
+user	0m2.385s
+sys	0m0.255s
+sha512: c5ddc91cac25709c2fbe1c297ed875597a246eb1bafe7465d2a8c7597f645f92aa68ace621416a8a500b3663e0c0726d6ffa6c88bd85bc60bbdf6aebefcc386a
+
+real	0m2.634s
+user	0m2.437s
+sys	0m0.201s
+sha512-224: 97d791d707ec1fba1fe6b0749eaa2293306d4ce0bbfcf6be8cd7a970
+
+real	0m2.632s
+user	0m2.451s
+sys	0m0.186s
+sha512-256: fa3f8076bdb8099bb827d46c3a4f051a9c39ae6e53654009c80cb14882655355
+
+real	0m2.629s
+user	0m2.502s
+sys	0m0.132s
+shake128: abf798236691d7b679cd50de26879c91
+
+real	0m2.213s
+user	0m1.997s
+sys	0m0.220s
+shake256: 39de787c4ec5e720e7fa065fb14f2c059f32a16bcb453ba328bcef1bc87c257a
+
+real	0m2.623s
+user	0m2.416s
+sys	0m0.211s
+sm3: 6b2eb938487528acbb0ee04973b867f5dac0ecc7b51062a9f656c61015889848
+
+real	0m1.172s
+user	0m0.931s
+sys	0m0.247s
+
