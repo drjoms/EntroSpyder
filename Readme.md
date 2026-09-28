@@ -5,7 +5,7 @@ This project is licensed under the Apache License 2.0.
 For attribution and contact information, please refer to the `NOTICE` file in this repository.
 
 Project is a very early stage. It's not even alpha yet.
-Since we are building this as a high-speed, experimental engine, your README shouldn't look like a boring textbook. It should look like a Technical Manifesto. It needs to tell people: "This is fast, this is chaotic, and this is how it works."
+
 
 🕷️ Project EntroSpyder
 
